@@ -12,6 +12,7 @@
         <module>simple-spring-01-simplebean</module>
         <module>simple-spring-02-bean</module>
         <module>simple-spring-03-proxy</module>
+        <module>simple-spring-04-properties-fill</module>
     </modules>
 
     <properties>
