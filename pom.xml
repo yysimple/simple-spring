@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>simple-spring-01-simplebean</module>
+        <module>simple-spring-02-bean</module>
     </modules>
 
     <properties>
