@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+
+    <bean id="userMapper" class="com.simple.mapper.UserMapper"/>
+
+    <bean id="userService" class="com.simple.service.UserService">
+        <property name="userId" value="10001"/>
+        <property name="userMapper" ref="userMapper"/>
+    </bean>
+
+</beans>
