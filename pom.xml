@@ -16,6 +16,7 @@
         <module>simple-spring-05-xml-fill</module>
         <module>simple-spring-06-bean-post-processor</module>
         <module>simple-spring-07-init-destory</module>
+        <module>simple-spring-08-aware</module>
     </modules>
 
     <properties>
