@@ -20,6 +20,7 @@
         <module>simple-spring-09-factory-bean</module>
         <module>simple-spring-10-listen-event</module>
         <module>simple-spring-11-aop-aspect</module>
+        <module>simple-spring-12-spring-aop</module>
     </modules>
 
     <properties>
