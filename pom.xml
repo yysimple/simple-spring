@@ -19,6 +19,7 @@
         <module>simple-spring-08-aware</module>
         <module>simple-spring-09-factory-bean</module>
         <module>simple-spring-10-listen-event</module>
+        <module>simple-spring-11-aop-aspect</module>
     </modules>
 
     <properties>
