@@ -24,6 +24,7 @@
         <module>simple-spring-13-auto-scan</module>
         <module>simple-spring-14-annotation</module>
         <module>simple-spring-15-proxy-setvalue</module>
+        <module>simple-spring-16-solve-cycle-dependencies</module>
     </modules>
 
     <properties>
