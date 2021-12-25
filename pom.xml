@@ -21,6 +21,7 @@
         <module>simple-spring-10-listen-event</module>
         <module>simple-spring-11-aop-aspect</module>
         <module>simple-spring-12-spring-aop</module>
+        <module>simple-spring-13-auto-scan</module>
     </modules>
 
     <properties>
