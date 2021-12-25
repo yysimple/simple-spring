@@ -25,6 +25,7 @@
         <module>simple-spring-14-annotation</module>
         <module>simple-spring-15-proxy-setvalue</module>
         <module>simple-spring-16-solve-cycle-dependencies</module>
+        <module>simple-spring-17-convert</module>
     </modules>
 
     <properties>
