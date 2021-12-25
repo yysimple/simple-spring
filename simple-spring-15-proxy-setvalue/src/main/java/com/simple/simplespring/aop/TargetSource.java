@@ -1,7 +1,5 @@
 package com.simple.simplespring.aop;
 
-import com.simple.simplespring.util.ClassUtils;
-
 /**
  * 功能描述: 该类在实际的AOP中是实现了 implements TargetClassAware
  * 用于通知的，这里先不做了
@@ -18,9 +16,7 @@ public class TargetSource {
     }
 
     public Class<?>[] getTargetClass() {
-        Class<?> clazz = this.target.getClass();
-        clazz = ClassUtils.isCglibProxyClass(clazz) ? clazz.getSuperclass() : clazz;
-        return clazz.getInterfaces();
+        return this.target.getClass().getInterfaces();
     }
 
     public Object getTarget() {
