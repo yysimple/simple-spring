@@ -13,7 +13,7 @@ import com.sun.istack.internal.Nullable;
  * @author: WuChengXing
  * @create: 2021-12-24 15:09
  **/
-public class AspectJExpressionPointcutAdvisor extends AbstractGenericPointcutAdvisor implements BeanFactoryAware {
+public class AspectJExpressionPointcutAdvisor extends AbstractGenericPointcutAdvisor {
 
     /**
      * spring在此会直接new一个 AspectJExpressionPointcut
@@ -26,12 +26,12 @@ public class AspectJExpressionPointcutAdvisor extends AbstractGenericPointcutAdv
     private String expression;
 
     public void setExpression(@Nullable String expression) {
-        this.pointcut.setExpression(expression);
+        this.expression = expression;
     }
 
     @Nullable
     public String getExpression() {
-        return this.pointcut.getExpression();
+        return this.expression;
     }
 
     public void setLocation(@Nullable String location) {
@@ -41,11 +41,6 @@ public class AspectJExpressionPointcutAdvisor extends AbstractGenericPointcutAdv
     @Nullable
     public String getLocation() {
         return this.pointcut.getLocation();
-    }
-
-    @Override
-    public void setBeanFactory(BeanFactory beanFactory) {
-        this.pointcut.setBeanFactory(beanFactory);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.simple.simplespring.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.simple.simplespring.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import com.simple.simplespring.beans.BeansException;
 import com.simple.simplespring.beans.PropertyValue;
 import com.simple.simplespring.beans.PropertyValues;
@@ -273,7 +274,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
         for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
             if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
-                Object result = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessBeforeInstantiation(beanClass, beanName);
+                InstantiationAwareBeanPostProcessor bpp = (InstantiationAwareBeanPostProcessor) beanPostProcessor;
+                if (beanPostProcessor instanceof DefaultAdvisorAutoProxyCreator) {
+                    DefaultAdvisorAutoProxyCreator creator = (DefaultAdvisorAutoProxyCreator) beanPostProcessor;
+                    creator.setBeanFactory(this);
+                }
+                Object result = bpp.postProcessBeforeInstantiation(beanClass, beanName);
                 if (null != result) {
                     return result;
                 }
