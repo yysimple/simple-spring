@@ -24,12 +24,9 @@ import java.util.Set;
  * @create: 2021-12-23 23:44
  **/
 public class AspectJExpressionPointcut extends AbstractExpressionPointcut
-        implements ClassFilter, IntroductionAwareMethodMatcher, BeanFactoryAware {
+        implements ClassFilter, IntroductionAwareMethodMatcher {
 
     private static final Set<PointcutPrimitive> SUPPORTED_PRIMITIVES = new HashSet<>();
-
-    @Nullable
-    private BeanFactory beanFactory;
 
     static {
         // 这里是注册以表达式EXECUTION的方式去匹配对应的类
@@ -85,11 +82,6 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
     @Override
     public MethodMatcher getMethodMatcher() {
         return this;
-    }
-
-    @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        this.beanFactory = beanFactory;
     }
 
     @Override

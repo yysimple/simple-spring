@@ -2,10 +2,12 @@ package com.simple.simplespring.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.simple.simplespring.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import com.simple.simplespring.beans.BeansException;
 import com.simple.simplespring.beans.PropertyValue;
 import com.simple.simplespring.beans.PropertyValues;
 import com.simple.simplespring.beans.factory.*;
+import com.simple.simplespring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import com.simple.simplespring.beans.factory.config.*;
 import com.sun.istack.internal.Nullable;
 
@@ -149,12 +151,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
         // ...上面有很多校验，其实就是 PropertyValues 这里的值可能会发生改变，也就是支持动态注入的意思，这里就先不是实现了
         // 这里为了模仿的像一点，我们也传入 4 个参数，因为最后一个参数是会改变的，我们这里不支持动态改变，只是为了模仿
-        if (hasInstantiationAwareBeanPostProcessors()) {
+        if (!Objects.isNull(beanDefinition.getPropertyValues())) {
             applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName, bean, beanDefinition);
-        } else {
-            if (!Objects.isNull(beanDefinition.getPropertyValues())) {
-                applyPropertyValues(beanName, bean, beanDefinition, beanDefinition.getPropertyValues());
-            }
+            applyPropertyValues(beanName, bean, beanDefinition, beanDefinition.getPropertyValues());
         }
     }
 
@@ -285,6 +284,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     protected void applyBeanPostProcessorsBeforeApplyingPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
         for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
             if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                if (beanPostProcessor instanceof AutowiredAnnotationBeanPostProcessor) {
+                    AutowiredAnnotationBeanPostProcessor processor = (AutowiredAnnotationBeanPostProcessor) beanPostProcessor;
+                    processor.setBeanFactory(this);
+                }
                 PropertyValues pvs = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessPropertyValues(beanDefinition.getPropertyValues(), bean, beanName);
                 if (null != pvs) {
                     for (PropertyValue propertyValue : pvs.getPropertyValues()) {
@@ -319,7 +322,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
         for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
             if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
-                Object result = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessBeforeInstantiation(beanClass, beanName);
+                InstantiationAwareBeanPostProcessor processor = (InstantiationAwareBeanPostProcessor) beanPostProcessor;
+                if (beanPostProcessor instanceof DefaultAdvisorAutoProxyCreator) {
+                    DefaultAdvisorAutoProxyCreator creator = (DefaultAdvisorAutoProxyCreator) beanPostProcessor;
+                    creator.setBeanFactory(this);
+                }
+                if (beanPostProcessor instanceof AutowiredAnnotationBeanPostProcessor) {
+                    AutowiredAnnotationBeanPostProcessor creator = (AutowiredAnnotationBeanPostProcessor) beanPostProcessor;
+                    creator.setBeanFactory(this);
+                }
+                Object result = processor.postProcessBeforeInstantiation(beanClass, beanName);
                 if (null != result) {
                     return result;
                 }
@@ -333,6 +345,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException {
         Object result = existingBean;
         for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            if (processor instanceof DefaultAdvisorAutoProxyCreator) {
+                DefaultAdvisorAutoProxyCreator creator = (DefaultAdvisorAutoProxyCreator) processor;
+                creator.setBeanFactory(this);
+            }
             Object current = processor.postProcessAfterInitialization(result, beanName);
             if (null == current) {
                 return result;

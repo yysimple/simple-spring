@@ -3,10 +3,7 @@ package com.simple.simplespring.beans;
 import com.sun.istack.internal.Nullable;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 功能描述: 这个算是其实现之一，为了和spring保持一致，我们这里实现一个简易版的
@@ -19,10 +16,10 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
     /**
      * 这里的话是把Spring对该集合初始化的操作全部放在MutablePropertyValues的构造器中，提供了多种
      */
-    private final List<PropertyValue> propertyValueList;
+    private final Set<PropertyValue> propertyValueList;
 
     public MutablePropertyValues() {
-        this.propertyValueList = new ArrayList<>(0);
+        this.propertyValueList = new HashSet<>(0);
     }
 
     /**
@@ -32,29 +29,29 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
      */
     public MutablePropertyValues(@Nullable Map<?, ?> original) {
         if (original != null) {
-            this.propertyValueList = new ArrayList<>(original.size());
+            this.propertyValueList = new HashSet<>(original.size());
             original.forEach((attrName, attrValue) -> this.propertyValueList.add(
                     new PropertyValue(attrName.toString(), attrValue)));
         } else {
-            this.propertyValueList = new ArrayList<>(0);
+            this.propertyValueList = new HashSet<>(0);
         }
     }
 
     public MutablePropertyValues(@Nullable PropertyValues original) {
         if (original != null) {
             PropertyValue[] pvs = original.getPropertyValues();
-            this.propertyValueList = new ArrayList<>(pvs.length);
+            this.propertyValueList = new HashSet<>(pvs.length);
             for (PropertyValue pv : pvs) {
                 this.propertyValueList.add(new PropertyValue(pv));
             }
         } else {
-            this.propertyValueList = new ArrayList<>(0);
+            this.propertyValueList = new HashSet<>(0);
         }
     }
 
-    public MutablePropertyValues(@Nullable List<PropertyValue> propertyValueList) {
+    public MutablePropertyValues(@Nullable Set<PropertyValue> propertyValueList) {
         this.propertyValueList =
-                (propertyValueList != null ? propertyValueList : new ArrayList<>());
+                (propertyValueList != null ? propertyValueList : new HashSet<>());
     }
 
     /**

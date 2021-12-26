@@ -16,8 +16,10 @@ public class BeanTest {
     public void test_circular() {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
         Husband husband = applicationContext.getBean("husband", Husband.class);
-        Wife wife = applicationContext.getBean("wife", Wife.class);
+        Object wife = applicationContext.getBean("wife");
+        Wife wife1 = (Wife) wife;
+        System.out.println();
         System.out.println("老公的媳妇：" + husband.queryWife());
-        System.out.println("媳妇的老公：" + wife.queryHusband());
+//        System.out.println("媳妇的老公：" + wife.queryHusband());
     }
 }
