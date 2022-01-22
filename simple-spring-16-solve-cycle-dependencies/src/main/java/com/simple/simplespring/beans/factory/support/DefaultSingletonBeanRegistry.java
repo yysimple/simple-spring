@@ -12,6 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 功能描述:
+ * 该类里面的：getSingleton、registerSingleton、addSingleton、addSingletonFactory等类是用来解决三级缓存的
+ * 其中的步骤是：
+ * 1. 通过getSingleton来获取对象，会根据不同的条件来进行获取哪里的对象
+ * 2. 首先通过快速尝试，也就是不加锁的方式先去一级、二级两种对象里面获取，然后这里当获取二级的时候，会把二级里面的对象移到一级里面
+ * 3. 然后都失败，这里有点奇怪的是，spring中会传入一个“allowEarlyReference”的变量来控制是否继续往下走 去尝试从一级、二级、三级缓存中拿取对象
+ * 但是这个变量平时也没怎么见过，然后从三级缓存里面拿到了，就会将其移动到二级缓存中！
  *
  * @author: WuChengXing
  * @create: 2021-12-21 10:28
